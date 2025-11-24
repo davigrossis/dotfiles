@@ -1,0 +1,73 @@
+* {
+    border: none;
+    font-family: "JetBrains Mono Nerd Font", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+window#waybar {
+    background: rgba(43, 48, 59, 0.5);
+    color: white;
+
+}
+
+tooltip {
+  background: rgba(43, 48, 59, 0.5);
+  border: 1px solid rgba(100, 114, 125, 0.5);
+}
+tooltip label {
+  color: white;
+}
+
+
+
+#workspaces button {
+    padding: 0 6px;
+    background: transparent;
+    color: white;
+    border-bottom: 3px solid transparent;
+}
+
+#workspaces button.active {
+    color: rgb(100, 100, 253);
+    border-top: 1px solid rgb(100, 100, 253);
+    border-bottom: 1px solid rgb(100, 100, 253);
+    background-color: rgba(100, 100, 253, 0.199);
+    border-radius: 0px;
+    min-width: 1.25em;
+    transition: all 0.1s ease-in-out;
+}
+
+#workspaces button:not(.empty) {
+    color: rgb(100, 100, 253);
+    border-radius: 0px;
+}
+
+#pulseaudio {
+    margin-right: 1.25em;
+    transition: all 0.3s ease;
+}
+
+#network {
+    margin-right: 0.8em;
+}
+
+#tray {
+    margin-right: 0.8em;
+
+}
+
+#custom-archicon {
+    color: rgb(13, 126, 255);
+}
+
+#custom-spotify {
+    color: rgb(30, 215, 96);
+    margin-left: 1em;
+}
+
+#clock {
+
+}
