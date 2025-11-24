@@ -1,0 +1,17 @@
+# Backups
+*.bak
+*backup*
+.cache/
+logs/
+*.log
+
+# Arquivos específicos
+waybar/*.log
+hypr/*.log
+
+# Pasta de cache do Waypaper
+.config/waypaper/.cache/
+
+# Não versionar arquivos temporários
+*~
+
