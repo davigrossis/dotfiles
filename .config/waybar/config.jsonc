@@ -1,15 +1,18 @@
 {
     "layer": "top",
     "modules-left": ["hyprland/workspaces", "custom/spotify"],
-    "modules-center": ["clock"],
-    "modules-right": ["battery", "tray","pulseaudio", "network" , "custom/archicon"],
+    "modules-center": ["clock", "custom/archicon"],
+    "modules-right": ["tray", "network", "bluetooth", "pulseaudio", "battery"],
     "margin-top": 5,
     "margin-bottom": 5,
 
-    
     "battery": {
         "format": "{capacity}% {icon}",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": ["", "", "", "", ""],
+        "states": {
+            "warning": 40,
+            "critical": 15
+        }
     },
     "clock": {
         "format": "{:%a %d %b, %H:%M}"
@@ -17,20 +20,18 @@
     "hyprland/workspaces": {
         "format": "{name}",
         "persistent-workspaces": {
-                "*": 4
+            "*": 4
         }
     },
     "tray": {
-    "icon-size": 18,
-    "spacing": 10
+        "icon-size": 18,
+        "spacing": 10
     },
     "pulseaudio": {
         "format": "{volume}% {icon}",
         "format-bluetooth": "{volume}% {icon}",
         "format-muted": "",
         "format-icons": {
-            "alsa_output.pci-0000_00_1f.3.analog-stereo": "",
-            "alsa_output.pci-0000_00_1f.3.analog-stereo-muted": "",
             "headphone": "",
             "hands-free": "",
             "headset": "",
@@ -45,16 +46,16 @@
         "ignored-sinks": ["Easy Effects Sink"]
     },
     "network": {
-        "interface": "enp6s0",
+        "interface": "wlan0",
         "format": "{ifname}",
-        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-wifi": "{essid} ",
         "format-ethernet": "{ifname} 󰊗",
         "format-disconnected": "",
         "tooltip-format": "{ifname} via {gwaddr} 󰊗",
         "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
         "tooltip-format-ethernet": "{ifname} ",
         "tooltip-format-disconnected": "Disconnected",
-        "max-length": 50
+        "max-length": 60
     },
     "custom/archicon": {
         "format": "   ",
@@ -67,5 +68,15 @@
         "on-click": "playerctl -p spotify play-pause",
         "on-scroll-up": "playerctl -p spotify next",
         "on-scroll-down": "playerctl -p spotify previous"
+    },
+    "bluetooth": {
+        "format-no-controller": "",
+        "format-disabled": "",
+        "format-off": "<s>Bluetooth</s>",
+        "format-on": "Bluetooth",
+        "format-connected": "{device_alias}",
+        "on-click-right": "kitty -e bluetoothctl",
+        "on-click": "bluetoothctl show | grep -q \"Powered: yes\" && bluetoothctl power off || bluetoothctl power on",
+        "tooltip-format-connected": "{device_alias}\t{device_address}"
     }
 }
