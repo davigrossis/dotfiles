@@ -3,7 +3,7 @@
     "layer": "top",
     "modules-left": ["custom/archicon","clock", "custom/spotify"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["battery", "tray","pulseaudio", "network"], 
+    "modules-right": ["tray","network", "pulseaudio"], 
     "margin-top": 0,
     "margin-bottom": 5,
 
