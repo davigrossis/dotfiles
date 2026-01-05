@@ -47,15 +47,16 @@ tooltip label {
 }
 
 #pulseaudio {
-    margin-right: 0.8em;
+    margin-right: 1.25em;
     transition: all 0.3s ease;
-    color: rgb(212, 103, 103);
+    color: rgb(255, 255, 255);
     border-left: 2px solid rgba(18, 90, 145, 0.5);
     padding-left: 0.5em;
 }
 
 #network {
-    color: rgb(238, 92, 24);
+    margin-right: 0.8em;
+    color: rgb(255, 255, 255);
     border-left: 2px solid rgba(18, 90, 145, 0.5);
     padding-left: 0.5em;
 }
@@ -65,21 +66,6 @@ tooltip label {
     color: rgb(238, 92, 24);
 }
 
-#battery {
-    margin-right: 1.25em;
-    color: rgb(30, 215, 96);
-    border-left: 2px solid rgba(18, 90, 145, 0.5);
-    padding-left: 0.5em;
-}
-#battery.warning {
-    margin-right: 1.25em;
-    color: rgb(215, 187, 30);
-}
-#battery.warning {
-    margin-right: 1.25em;
-    color: rgb(215, 30, 30);
-}
-
 #custom-archicon {
     color: rgb(13, 126, 255);
 }
@@ -87,13 +73,6 @@ tooltip label {
 #custom-spotify {
     color: rgb(30, 215, 96);
     margin-left: 1em;
-}
-
-#bluetooth {
-    margin-right: 0.6em;
-    color: rgb(17, 17, 243);
-    border-left: 2px solid rgba(18, 90, 145, 0.5);
-    padding-left: 0.5em;
 }
 
 #clock {
