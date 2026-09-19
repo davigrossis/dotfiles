@@ -59,8 +59,24 @@ if [ "$SCHEME" = auto ]; then
     if awk -v s="$sat" 'BEGIN { exit !(s < 0.05) }'; then SCHEME=scheme-monochrome; else SCHEME=scheme-tonal-spot; fi
 fi
 
-# 3) Gera todos os templates (Quickshell, Hyprland, rofi, kitty, Qt, GTK3, btop, nvim)
-if ! matugen image "$WALL" -c "$MATUGEN_CFG" -m "$RICE_MODE" -t "$SCHEME" --prefer saturation -q; then
+# 3) Cor-fonte: candidatos vêm em ordem de dominância; pega o primeiro "usável"
+#    (saturação >= 25% e luminosidade entre 15% e 85%) — evita pretos/brancos dominantes
+#    (ex.: lua vermelha em fundo preto) sem trocar a cor principal de imagens coloridas.
+IDX=$(matugen image "$WALL" -c "$MATUGEN_CFG" --show-source-colors 2>/dev/null | grep -oE '#[0-9a-fA-F]{6}' | python3 -c '
+import sys, colorsys
+cands = [l.strip() for l in sys.stdin if l.strip()]
+for i, c in enumerate(cands[:5]):
+    r, g, b = (int(c[k:k + 2], 16) / 255 for k in (1, 3, 5))
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    if s >= 0.25 and 0.15 <= l <= 0.85:
+        print(i); break
+else:
+    print(0)
+' 2>/dev/null)
+IDX=${IDX:-0}
+
+# 4) Gera todos os templates (Quickshell, Hyprland, rofi, kitty, Qt, GTK3, btop, nvim)
+if ! matugen image "$WALL" -c "$MATUGEN_CFG" -m "$RICE_MODE" -t "$SCHEME" --source-color-index "$IDX" -q; then
     log "ERRO: matugen falhou para $WALL"
     exit 1
 fi

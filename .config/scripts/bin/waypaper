@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Wrapper do rice (este diretório só entra no PATH dentro do Hyprland — rice.conf).
+#
+# O Waypaper do AUR depende de python-screeninfo e python-imageio-ffmpeg, que ficaram
+# instalados apenas para o Python 3.13 depois que o sistema passou para o Python 3.14
+# (pacotes do AUR não são recompilados sozinhos). Resultado: "waypaper" morria com
+# "ModuleNotFoundError: No module named 'screeninfo'" (inclusive no SUPER+W).
+#
+# Enquanto esses pacotes não forem recompilados — conserto definitivo:
+#     yay -S python-screeninfo python-imageio-ffmpeg
+# — este wrapper expõe SOMENTE esses dois módulos (Python puro) ao Python atual.
+# Depois de recompilar, o "import" funciona e o wrapper apenas executa o waypaper.
+if ! python3 -c 'import screeninfo, imageio_ffmpeg' 2>/dev/null; then
+    shim="$HOME/.local/share/rice/pyshim"
+    mkdir -p "$shim"
+    for m in screeninfo imageio_ffmpeg; do
+        for d in /usr/lib/python3.*/site-packages/"$m"; do
+            [ -d "$d" ] && ln -sfn "$d" "$shim/$m"
+        done
+    done
+    export PYTHONPATH="$shim${PYTHONPATH:+:$PYTHONPATH}"
+fi
+exec /usr/bin/waypaper "$@"
