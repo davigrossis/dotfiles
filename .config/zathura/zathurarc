@@ -38,3 +38,5 @@ set recolor-lightcolor          "rgba(242,229,188,1)"  # bg
 set recolor-darkcolor           "rgba(60,56,54,1)"     # fg
 set recolor                     "true"
 set recolor-keephue             "true"                 # keep original color
+
+set selection-clipboard clipboard
