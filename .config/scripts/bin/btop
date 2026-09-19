@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Wrapper do rice: só entra no PATH dentro da sessão Hyprland (env em ~/.config/hypr/rice/rice.conf).
+# Usa um btop.conf próprio do rice com o tema gerado do wallpaper; fora disso, btop normal.
+T="$HOME/.local/state/rice/btop"
+if [ "$XDG_CURRENT_DESKTOP" = "Hyprland" ] && [ -f "$T/themes/matugen.theme" ]; then
+    [ -f "$T/btop.conf" ] || printf 'color_theme = "matugen"\ntheme_background = False\n' > "$T/btop.conf"
+    exec /usr/bin/btop --config "$T/btop.conf" --themes-dir "$T/themes" "$@"
+fi
+exec /usr/bin/btop "$@"

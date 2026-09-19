@@ -1,0 +1,126 @@
+/* Tema do rice (Hyprland + Quickshell) — cores geradas do wallpaper pelo matugen.
+ * As cores vêm de ~/.local/state/rice/rofi-colors.rasi (reescrito pelo apply-theme.sh).
+ * Tema antigo preservado em themes/rounded-template.rasi (o rollback volta para ele). */
+@import "~/.local/state/rice/rofi-colors.rasi"
+
+configuration {
+    show-icons:          true;
+    icon-theme:          "Papirus-Dark";
+    font:                "Inter Medium 11";
+    drun-display-format: "{name}";
+    display-drun:        "󰍉";
+    display-run:         "";
+    display-window:      "";
+    display-filebrowser: "";
+    hover-select:        true;
+    me-select-entry:     "";
+    me-accept-entry:     "MousePrimary";
+}
+
+* {
+    background-color: transparent;
+    text-color:       @rice-fg;
+    margin:           0;
+    padding:          0;
+    spacing:          0;
+}
+
+window {
+    location:         center;
+    anchor:           center;
+    width:            580px;
+    border:           1px;
+    border-color:     @rice-outline-dim;
+    border-radius:    24px;
+    background-color: @rice-bg;
+    padding:          14px;
+}
+
+mainbox {
+    spacing:  12px;
+    children: [ inputbar, message, listview ];
+}
+
+inputbar {
+    background-color: @rice-surface-high;
+    border-radius:    18px;
+    padding:          12px 16px;
+    spacing:          12px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    font:           "JetBrainsMono Nerd Font 14";
+    text-color:     @rice-primary;
+    vertical-align: 0.5;
+}
+
+entry {
+    placeholder:       "Buscar…";
+    placeholder-color: @rice-fg-dim;
+    cursor-color:      @rice-primary;
+    vertical-align:    0.5;
+}
+
+message {
+    background-color: @rice-surface;
+    border-radius:    14px;
+    padding:          10px 14px;
+}
+
+textbox {
+    text-color: @rice-fg-dim;
+}
+
+listview {
+    lines:        8;
+    columns:      1;
+    fixed-height: true;
+    scrollbar:    false;
+    spacing:      4px;
+    cycle:        true;
+}
+
+element {
+    padding:       9px 12px;
+    spacing:       12px;
+    border-radius: 14px;
+}
+
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color:       @rice-fg;
+}
+
+element selected.normal {
+    background-color: @rice-primary-cont;
+    text-color:       @rice-on-primary-cont;
+}
+
+element normal.active, element alternate.active {
+    text-color: @rice-primary;
+}
+
+element selected.active {
+    background-color: @rice-primary;
+    text-color:       @rice-on-primary;
+}
+
+element normal.urgent, element alternate.urgent {
+    text-color: @rice-error;
+}
+
+element selected.urgent {
+    background-color: @rice-error;
+    text-color:       @rice-bg-solid;
+}
+
+element-icon {
+    size:           26px;
+    vertical-align: 0.5;
+}
+
+element-text {
+    text-color:     inherit;
+    vertical-align: 0.5;
+}

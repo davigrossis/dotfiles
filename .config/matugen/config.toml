@@ -1,0 +1,54 @@
+# matugen 4.x — paleta do rice (Hyprland + Quickshell) gerada a partir do wallpaper.
+# Chamado por ~/.config/scripts/apply-theme.sh (post_command do Waypaper e seletor do Quickshell).
+# Saídas geradas vão para ~/.local/state/rice/ (fora do repo e fora de qualquer arquivo do KDE).
+
+[config]
+version_check = false
+caching = false
+fallback_color = "#7aa2f7"
+
+# Cores extras "harmonizadas" com a paleta (usadas no terminal, btop, nvim, sucesso/aviso).
+[config.custom_colors]
+red = "#e06c75"
+green = "#98c379"
+yellow = "#e5c07b"
+blue = "#61afef"
+magenta = "#c678dd"
+cyan = "#56b6c2"
+orange = "#d19a66"
+
+[templates.quickshell]
+input_path = "~/.config/matugen/templates/quickshell.json"
+output_path = "~/.local/state/rice/colors.json"
+
+[templates.hyprland]
+input_path = "~/.config/matugen/templates/hyprland.conf"
+output_path = "~/.local/state/rice/hyprland-colors.conf"
+
+[templates.rofi]
+input_path = "~/.config/matugen/templates/rofi.rasi"
+output_path = "~/.local/state/rice/rofi-colors.rasi"
+
+[templates.kitty]
+input_path = "~/.config/matugen/templates/kitty.conf"
+output_path = "~/.local/state/rice/kitty-colors.conf"
+
+[templates.qt]
+input_path = "~/.config/matugen/templates/qt.colors"
+output_path = "~/.local/state/rice/Matugen.colors"
+
+[templates.gtk3]
+input_path = "~/.config/matugen/templates/gtk3.css"
+output_path = "~/.local/share/themes/Matugen/gtk-3.0/gtk.css"
+
+[templates.gtk3dark]
+input_path = "~/.config/matugen/templates/gtk3.css"
+output_path = "~/.local/share/themes/Matugen/gtk-3.0/gtk-dark.css"
+
+[templates.btop]
+input_path = "~/.config/matugen/templates/btop.theme"
+output_path = "~/.local/state/rice/btop/themes/matugen.theme"
+
+[templates.nvim]
+input_path = "~/.config/matugen/templates/nvim.lua"
+output_path = "~/.local/share/nvim/site/colors/matugen.lua"

@@ -1,1 +1,2 @@
-@theme "/home/davigrossi/.config/rofi/themes/rounded-template.rasi"
+/* Rice (Hyprland/Quickshell): tema gerado do wallpaper. Tema anterior: themes/rounded-template.rasi */
+@theme "~/.config/rofi/themes/rice.rasi"

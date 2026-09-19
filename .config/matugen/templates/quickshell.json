@@ -1,0 +1,18 @@
+{
+  "mode": "{{ mode }}",
+  "image": "{{ image }}",
+  "semantic": {
+    "red": "{{ colors.red_source.default.hex | harmonize: {{ colors.source_color.default.hex }} }}",
+    "green": "{{ colors.green_source.default.hex | harmonize: {{ colors.source_color.default.hex }} }}",
+    "yellow": "{{ colors.yellow_source.default.hex | harmonize: {{ colors.source_color.default.hex }} }}",
+    "blue": "{{ colors.blue_source.default.hex | harmonize: {{ colors.source_color.default.hex }} }}",
+    "magenta": "{{ colors.magenta_source.default.hex | harmonize: {{ colors.source_color.default.hex }} }}",
+    "cyan": "{{ colors.cyan_source.default.hex | harmonize: {{ colors.source_color.default.hex }} }}",
+    "orange": "{{ colors.orange_source.default.hex | harmonize: {{ colors.source_color.default.hex }} }}"
+  },
+  "colors": {
+<* for name, value in colors *>
+    "{{ name }}": "{{ value.default.hex }}"<* if not {{ loop.last }} *>,<* endif *>
+<* endfor *>
+  }
+}
