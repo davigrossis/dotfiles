@@ -78,6 +78,13 @@ ShellRoot {
         function clearNotifications(): void {
             Notifs.clearAll();
         }
+        function notifications(): string {
+            return JSON.stringify(Notifs.list.map(n => ({
+                        app: n.appName,
+                        summary: n.summary,
+                        popup: Notifs.popups.includes(n)
+                    })));
+        }
         function status(): string {
             return JSON.stringify({
                 panel: Ui.panel,

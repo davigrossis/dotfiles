@@ -59,6 +59,17 @@ if [ "$SCHEME" = auto ]; then
     if awk -v s="$sat" 'BEGIN { exit !(s < 0.05) }'; then SCHEME=scheme-monochrome; else SCHEME=scheme-tonal-spot; fi
 fi
 
+# Se uma chamada antecipada do wrapper do Waypaper já aplicou exatamente este tema,
+# o post_command seguinte sai rápido em vez de refazer todo o matugen.
+if [ -f "$STATE/wallpaper" ] && [ -f "$STATE/theme-effective" ] && [ -f "$STATE/colors.json" ] &&
+    [ "$(cat "$STATE/wallpaper" 2>/dev/null)" = "$WALL" ] &&
+    grep -qx "scheme=$SCHEME" "$STATE/theme-effective" 2>/dev/null &&
+    grep -qx "mode=$RICE_MODE" "$STATE/theme-effective" 2>/dev/null &&
+    [ "$STATE/colors.json" -nt "$SETTINGS" ]; then
+    log "skip: tema já atual para $(basename "$WALL")"
+    exit 0
+fi
+
 # 3) Cor-fonte: candidatos vêm em ordem de dominância; pega o primeiro "usável"
 #    (saturação >= 25% e luminosidade entre 15% e 85%) — evita pretos/brancos dominantes
 #    (ex.: lua vermelha em fundo preto) sem trocar a cor principal de imagens coloridas.
@@ -94,15 +105,23 @@ mkdir -p "$GTK_DIR/gtk-4.0"
 J="$STATE/colors.json"
 col() { jq -r ".colors.$1" "$J" | tr -d '#'; }
 
+#   kitty: aplica as cores diretamente em todas as janelas quando o socket remoto existe.
+#   O SIGUSR1 fica como fallback para sessões antigas/sem socket.
+kitty @ --to unix:@kitty-rice set-colors --all --configured "$STATE/kitty-colors.conf" >/dev/null 2>&1 ||
+    pkill -USR1 -x kitty 2>/dev/null
+
 #   Hyprland: bordas e sombras sem "hyprctl reload" (não reinicia nada)
 hyprctl --batch "keyword general:col.active_border rgba($(col primary)ee) rgba($(col tertiary)ee) 45deg ; keyword general:col.inactive_border rgba($(col outline_variant)aa) ; keyword decoration:shadow:color rgba($(col shadow)cc) ; keyword decoration:shadow:color_inactive rgba($(col shadow)88)" >/dev/null
 
-#   kitty: SIGUSR1 = recarregar config (o envinclude KITTY_RICE_* traz as cores novas)
-pkill -USR1 -x kitty 2>/dev/null
-
-#   Qt (qt6ct-kde): o plugin observa o diretório do qt6ct; recriar o arquivo dispara o reload
-if [ -f "$QT6CT_CONF" ] && grep -q 'rice/Matugen.colors' "$QT6CT_CONF"; then
-    cp -p "$QT6CT_CONF" "$QT6CT_CONF.rice-tmp" && mv -f "$QT6CT_CONF.rice-tmp" "$QT6CT_CONF"
+#   Qt (qt6ct-kde): o plugin observa o diretório do qt6ct e relê a config, mas guarda em cache
+#   o esquema .colors pelo caminho do arquivo. Por isso alternamos entre Matugen-a/-b.colors:
+#   o caminho muda, o qt6ct.conf é regravado (rename atômico) e os apps Qt abertos atualizam.
+if [ -f "$QT6CT_CONF" ] && grep -q '/rice/Matugen' "$QT6CT_CONF"; then
+    cur=$(sed -n 's/^color_scheme_path=//p' "$QT6CT_CONF")
+    case "$cur" in *Matugen-a.colors) slot=b ;; *) slot=a ;; esac
+    cp -f "$STATE/Matugen.colors" "$STATE/Matugen-$slot.colors"
+    sed "s#^color_scheme_path=.*#color_scheme_path=$STATE/Matugen-$slot.colors#" "$QT6CT_CONF" > "$QT6CT_CONF.rice-tmp" &&
+        mv -f "$QT6CT_CONF.rice-tmp" "$QT6CT_CONF"
 fi
 
 #   btop (via wrapper do rice): SIGUSR2 = recarregar config/tema
