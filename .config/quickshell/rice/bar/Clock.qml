@@ -4,7 +4,7 @@ import Quickshell
 import qs.services
 import qs.widgets
 
-// Relógio + data (pt-BR). Clique abre o calendário.
+// Relógio + data. Clique abre o calendário.
 StateLayer {
     id: root
 
@@ -40,7 +40,7 @@ StateLayer {
         }
         Txt {
             visible: !root.compact
-            text: clock.date.toLocaleDateString(Qt.locale(), "ddd d MMM").replace(/\./g, "")
+            text: clock.date.toLocaleDateString(Qt.locale("en_US"), "ddd d MMM").replace(/\./g, "")
             dim: true
             font.pixelSize: Theme.font.normal
             font.weight: Font.Medium

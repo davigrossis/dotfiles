@@ -47,9 +47,9 @@ Item {
                 readonly property bool urgent: !vd && modelData.urgent
 
                 width: current ? 36 : 24
-                height: 22
+                height: Math.max(18, Theme.barHeight - 10)
                 anchors.verticalCenter: parent.verticalCenter
-                radius: 11
+                radius: height / 2
                 baseColor: current ? Theme.primary : urgent ? Theme.error : occupied ? Theme.alpha(Theme.surfaceFg, 0.12) : "transparent"
                 stateColor: current ? Theme.primaryFg : Theme.surfaceFg
                 onClicked: Desktops.activate(modelData.id)

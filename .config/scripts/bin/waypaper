@@ -20,4 +20,27 @@ if ! python3 -c 'import screeninfo, imageio_ffmpeg' 2>/dev/null; then
     done
     export PYTHONPATH="$shim${PYTHONPATH:+:$PYTHONPATH}"
 fi
+
+wall=""
+prev=""
+for arg in "$@"; do
+    case "$prev" in
+    --wallpaper)
+        wall="$arg"
+        break
+        ;;
+    esac
+    case "$arg" in
+    --wallpaper=*)
+        wall="${arg#--wallpaper=}"
+        break
+        ;;
+    esac
+    prev="$arg"
+done
+
+if [ -n "$wall" ] && [ -f "${wall/#\~/$HOME}" ]; then
+    "$HOME/.config/scripts/apply-theme.sh" "${wall/#\~/$HOME}" >/dev/null 2>&1 &
+fi
+
 exec /usr/bin/waypaper "$@"

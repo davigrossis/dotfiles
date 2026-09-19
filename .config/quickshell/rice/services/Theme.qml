@@ -130,8 +130,8 @@ Singleton {
         readonly property int panel: 22
         readonly property int full: 999
     }
-    readonly property int barHeight: 34
-    readonly property int barMargin: 6
+    readonly property int barHeight: 28
+    readonly property int barMargin: 4
     readonly property int gap: 8
     readonly property int padding: 14
 
@@ -201,7 +201,7 @@ Singleton {
     // o matugen reescreve o arquivo; espera um instante para não ler pela metade
     Timer {
         id: reloadTimer
-        interval: 80
+        interval: 25
         onTriggered: colorsView.reload()
     }
 }

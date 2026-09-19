@@ -5,7 +5,7 @@ import Quickshell.Wayland
 import qs.services
 import qs.widgets
 
-// Barra superior de um monitor: três "ilhas" flutuantes (esquerda, centro, direita).
+// Barra superior de um monitor: fundo unico com grupos alinhados.
 PanelWindow {
     id: bar
 
@@ -19,8 +19,8 @@ PanelWindow {
         left: true
         right: true
     }
-    implicitHeight: Theme.barHeight + Theme.barMargin
-    exclusiveZone: Ui.barVisible ? Theme.barHeight + Theme.barMargin : 0
+    implicitHeight: Theme.barHeight
+    exclusiveZone: Ui.barVisible ? Theme.barHeight : 0
     color: "transparent"
     WlrLayershell.namespace: "rice-bar"
     WlrLayershell.layer: WlrLayer.Top
@@ -40,19 +40,42 @@ PanelWindow {
         return Ui.panel === name && Ui.panelScreen === bar.screenName;
     }
 
+    component BarGroup: Item {
+        default property alias content: row.data
+        property real hpad: 5
+
+        implicitWidth: row.implicitWidth + hpad * 2
+        implicitHeight: Theme.barHeight
+
+        RowLayout {
+            id: row
+            anchors.verticalCenter: parent.verticalCenter
+            x: parent.hpad
+            spacing: 2
+        }
+    }
+
     Item {
         id: content
         anchors.fill: parent
-        anchors.topMargin: Theme.barMargin
-        anchors.leftMargin: Theme.barMargin + 2
-        anchors.rightMargin: Theme.barMargin + 2
         opacity: Ui.barVisible ? 1 : 0
         Behavior on opacity {
             NumberAnimation { duration: Theme.anim.normal }
         }
 
+        Rectangle {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            height: Theme.barHeight
+            radius: 0
+            color: Theme.barBg
+            border.width: 1
+            border.color: Theme.alpha(Theme.outlineVariant, 0.45)
+        }
+
         // ── Esquerda: launcher + workspaces ──────────────────────────────────────
-        Island {
+        BarGroup {
             id: left
             anchors.left: parent.left
             anchors.top: parent.top
@@ -87,7 +110,7 @@ PanelWindow {
         }
 
         // ── Centro: relógio + mídia ─────────────────────────────────────────────
-        Island {
+        BarGroup {
             id: center
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
@@ -111,8 +134,8 @@ PanelWindow {
             }
         }
 
-        // ── Direita: stats, bandeja e status ────────────────────────────────────
-        Island {
+        // ── Direita: stats e status ─────────────────────────────────────────────
+        BarGroup {
             id: right
             anchors.right: parent.right
             anchors.top: parent.top
@@ -122,15 +145,6 @@ PanelWindow {
                 compact: bar.compact
                 active: bar.isOpen("system")
                 onClicked: bar.openPanel("system", stats)
-            }
-            Rectangle {
-                visible: tray.visible
-                Layout.preferredWidth: 1
-                Layout.preferredHeight: 16
-                color: Theme.alpha(Theme.outlineVariant, 0.8)
-            }
-            Tray {
-                id: tray
             }
             Rectangle {
                 Layout.preferredWidth: 1
