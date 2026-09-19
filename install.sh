@@ -18,6 +18,9 @@ DOTFILES=(
     ["qt5ct"]="$CONFIG_DIR/qt5ct"
     ["qt6ct"]="$CONFIG_DIR/qt6ct"
     ["starship.toml"]="$CONFIG_DIR/starship.toml"
+    ["quickshell"]="$CONFIG_DIR/quickshell"
+    ["matugen"]="$CONFIG_DIR/matugen"
+    ["scripts"]="$CONFIG_DIR/scripts"
 )
 
 echo "==> Setting up dotfiles..."
