@@ -17,7 +17,7 @@ Tudo vale **só na sessão Hyprland**: o KDE Plasma não lê nada daqui.
 ## Atalhos novos (os antigos não mudaram)
 | Atalho | Ação |
 |---|---|
-| SUPER+SHIFT+W | seletor de wallpapers |
+| SUPER+W | seletor de wallpapers (substitui o Waypaper GUI; no rollback o SUPER+W volta a abrir o Waypaper) |
 | SUPER+C | central de controle |
 | SUPER+N | central de notificações |
 | SUPER+Escape | menu de energia |
@@ -26,8 +26,11 @@ Tudo vale **só na sessão Hyprland**: o KDE Plasma não lê nada daqui.
 SUPER+O voltou a funcionar (`layoutmsg, togglesplit` no Hyprland 0.56).
 
 ## Tema e wallpaper
-- Trocar wallpaper: SUPER+SHIFT+W, SUPER+W (Waypaper) ou `waypaper --wallpaper arq`.
-  O `post_command` do Waypaper roda o `apply-theme.sh`, que atualiza ao vivo a barra/painéis, as
+- Trocar wallpaper: SUPER+W (seletor) ou `~/.config/scripts/rice-wallpaper.sh set arq`.
+  Usa o awww direto com as transições salvas no config do Waypaper (swww_transition_*), grava o
+  wallpaper nesse config e roda o `apply-theme.sh` uma vez (cores calculadas sobre a miniatura;
+  imagens maiores que o monitor usam uma cópia já reduzida em ~/.cache/rice/wallpapers).
+  O `apply-theme.sh` atualiza ao vivo a barra/painéis, as
   bordas do Hyprland, o kitty, os apps Qt abertos e o btop. Rofi e GTK3 pegam as cores novas
   na próxima abertura.
 - Modo claro/escuro e esquema (Auto/Tonal/Vibrante/Fiel/Mono): central de controle.

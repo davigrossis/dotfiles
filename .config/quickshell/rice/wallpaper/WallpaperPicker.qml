@@ -296,6 +296,13 @@ PanelWindow {
 
                 GridView {
                     id: grid
+
+                    Txt {
+                        anchors.centerIn: parent
+                        visible: grid.count === 0
+                        text: win.filter !== "" ? "Nenhum wallpaper com \"" + win.filter + "\"  ·  Backspace apaga" : "Nenhuma imagem na pasta"
+                        dim: true
+                    }
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     Layout.minimumWidth: 280

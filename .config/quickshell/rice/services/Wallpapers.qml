@@ -89,7 +89,7 @@ Singleton {
     }
     function apply(path: string): void {
         root.applying = path;
-        // via wrapper do rice (conserta o waypaper do AUR após a atualização do Python)
-        Quickshell.execDetached(["sh", "-c", "PATH=\"$HOME/.config/scripts/bin:$PATH\" exec waypaper --wallpaper \"$1\"", "sh", path]);
+        // awww direto (mesmas transições do config do Waypaper) + um único apply-theme.sh
+        Quickshell.execDetached([root.home + "/.config/scripts/rice-wallpaper.sh", "set", path]);
     }
 }

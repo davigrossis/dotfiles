@@ -48,6 +48,17 @@ if [ ! -f "$WALL" ]; then
     exit 1
 fi
 
+# Análise de cor sobre a miniatura (480x270) do seletor: mesmas cores, ~10x mais rápido que
+# decodificar um PNG 4K três vezes. Gera a miniatura se ainda não existir.
+THUMB="$HOME/.cache/rice/wallpapers/$(printf '%s' "$WALL" | md5sum | cut -d' ' -f1)-thumb.jpg"
+if [ ! "$THUMB" -nt "$WALL" ]; then
+    mkdir -p "${THUMB%/*}"
+    magick "${WALL}[0]" -auto-orient -thumbnail '480x270^' -gravity center -extent 480x270 -strip -quality 84 "$THUMB.tmp.jpg" 2>/dev/null &&
+        mv -f "$THUMB.tmp.jpg" "$THUMB"
+fi
+SRC="$WALL"
+[ -f "$THUMB" ] && SRC="$THUMB"
+
 # 2) Preferências + escolha do esquema
 RICE_MODE=dark
 RICE_SCHEME=auto
@@ -55,7 +66,7 @@ RICE_SCHEME=auto
 [ -f "$SETTINGS" ] && . "$SETTINGS"
 SCHEME="$RICE_SCHEME"
 if [ "$SCHEME" = auto ]; then
-    sat=$(magick "${WALL}[0]" -resize 128x128\! -colorspace HSL -channel G -separate -format '%[fx:mean]' info: 2>/dev/null || echo 1)
+    sat=$(magick "${SRC}[0]" -resize 128x128\! -colorspace HSL -channel G -separate -format '%[fx:mean]' info: 2>/dev/null || echo 1)
     if awk -v s="$sat" 'BEGIN { exit !(s < 0.05) }'; then SCHEME=scheme-monochrome; else SCHEME=scheme-tonal-spot; fi
 fi
 
@@ -73,7 +84,7 @@ fi
 # 3) Cor-fonte: candidatos vêm em ordem de dominância; pega o primeiro "usável"
 #    (saturação >= 25% e luminosidade entre 15% e 85%) — evita pretos/brancos dominantes
 #    (ex.: lua vermelha em fundo preto) sem trocar a cor principal de imagens coloridas.
-IDX=$(matugen image "$WALL" -c "$MATUGEN_CFG" --show-source-colors 2>/dev/null | grep -oE '#[0-9a-fA-F]{6}' | python3 -c '
+IDX=$(matugen image "$SRC" -c "$MATUGEN_CFG" --show-source-colors 2>/dev/null | grep -oE '#[0-9a-fA-F]{6}' | python3 -c '
 import sys, colorsys
 cands = [l.strip() for l in sys.stdin if l.strip()]
 for i, c in enumerate(cands[:5]):
@@ -87,7 +98,7 @@ else:
 IDX=${IDX:-0}
 
 # 4) Gera todos os templates (Quickshell, Hyprland, rofi, kitty, Qt, GTK3, btop, nvim)
-if ! matugen image "$WALL" -c "$MATUGEN_CFG" -m "$RICE_MODE" -t "$SCHEME" --source-color-index "$IDX" -q; then
+if ! matugen image "$SRC" -c "$MATUGEN_CFG" -m "$RICE_MODE" -t "$SCHEME" --source-color-index "$IDX" -q; then
     log "ERRO: matugen falhou para $WALL"
     exit 1
 fi

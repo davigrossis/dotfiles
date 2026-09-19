@@ -45,13 +45,10 @@ start_shell() {
 }
 
 start_wallpaper() {
-    # Waypaper é a fonte de verdade; backend awww (o swww foi renomeado para awww).
+    # Wallpaper salvo no config do Waypaper, aplicado direto pelo awww (sem iniciar o Python).
     # O hyprpaper (autostart antigo) não aplicava wallpaper algum no 0.8; sai de cena aqui.
     pkill -x hyprpaper 2>/dev/null
-    # (detecta pelo socket desta sessão, não por nome de processo)
-    awww query >/dev/null 2>&1 || { awww-daemon >/dev/null 2>&1 & disown; }
-    for _ in $(seq 1 50); do awww query >/dev/null 2>&1 && break; sleep 0.1; done
-    waypaper --restore --no-post-command >/dev/null 2>&1
+    "$HOME/.config/scripts/rice-wallpaper.sh" restore >/dev/null 2>&1
     # primeira execução: garante que a paleta existe
     [ -f "$STATE/colors.json" ] || "$HOME/.config/scripts/apply-theme.sh"
     log "wallpaper restaurado: $(sed -n 's/^wallpaper = //p' "$HOME/.config/waypaper/config.ini" | head -n1)"
