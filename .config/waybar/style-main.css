@@ -47,15 +47,16 @@ tooltip label {
 }
 
 #pulseaudio {
-    margin-right: 0.8em;
+    margin-right: 1.25em;
     transition: all 0.3s ease;
-    color: rgb(212, 103, 103);
+    color: rgb(255, 255, 255);
     border-left: 2px solid rgba(18, 90, 145, 0.5);
     padding-left: 0.5em;
 }
 
 #network {
-    color: rgb(238, 92, 24);
+    margin-right: 0.8em;
+    color: rgb(255, 255, 255);
     border-left: 2px solid rgba(18, 90, 145, 0.5);
     padding-left: 0.5em;
 }
